@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<!-- saved from url=(0137)file:///C:/Users/ASUS/OneDrive/Desktop/UX/Accessibility%20Audit%20%E2%80%94%20Amex%20GBT%20Egencia%20_%20WCAG%202.1%20AA%20-%20Final.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accessibility Audit — Amex GBT Egencia | WCAG 2.1 AA</title>
+<link href="./index_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #ffffff12;
+    --border-bright: #ffffff22;
+    --blue: #2563FF;
+    --blue-light: #4f83ff;
+    --blue-dim: #2563ff22;
+    --critical: #ff4444;
+    --critical-dim: #ff444418;
+    --major: #ff8c00;
+    --major-dim: #ff8c0018;
+    --minor: #f5c400;
+    --minor-dim: #f5c40018;
+    --text: #e8e8f0;
+    --text-muted: #6b6b80;
+    --text-dim: #9898b0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 48px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .nav-logo span { color: var(--blue-light); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 100%, black 0%, transparent 70%);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #2563ff18 0%, transparent 70%);
+    top: 10%;
+    right: -100px;
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--blue-light);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(56px, 8vw, 112px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    max-width: 900px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--blue-light);
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 48px;
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.7s;
+  }
+
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .hero-meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-meta-value {
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+
+  /* SCORECARD */
+  .scorecard {
+    padding: 120px 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--blue-light);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 200px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .stat-card {
+    background: var(--surface);
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    text-align: center;
+    transition: background 0.2s;
+  }
+
+  .stat-card:hover { background: var(--surface2); }
+
+  .stat-number {
+    font-family: 'Fraunces', serif;
+    font-size: 64px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-number.total { color: var(--text); }
+  .stat-number.critical { color: var(--critical); }
+  .stat-number.major { color: var(--major); }
+  .stat-number.minor { color: var(--minor); }
+  .stat-number.screens { color: var(--blue-light); }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* EXECUTIVE SUMMARY */
+  .summary {
+    padding: 0 48px 120px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .summary-heading {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    position: sticky;
+    top: 80px;
+  }
+
+  .summary-heading em {
+    font-style: italic;
+    color: var(--blue-light);
+  }
+
+  .summary-body p {
+    font-size: 16px;
+    color: var(--text-dim);
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  .summary-body p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .callout {
+    background: var(--blue-dim);
+    border-left: 3px solid var(--blue);
+    padding: 20px 24px;
+    margin: 32px 0;
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  /* METHODOLOGY */
+  .methodology {
+    padding: 120px 48px;
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .method-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px;
+  }
+
+  .method-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 300;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  .method-card p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  .tool-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .tool-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border: 1px solid var(--border-bright);
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* SEVERITY LEGEND */
+  .severity-legend {
+    padding: 0 48px 120px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    align-items: stretch;
+  }
+
+  .severity-card {
+    background: var(--surface);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .severity-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-bottom: 16px;
+  }
+
+  .severity-card h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .severity-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* FINDINGS */
+  .findings {
+    padding: 120px 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .findings-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 64px;
+  }
+
+  .findings-title {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+
+  /* FILTER TABS */
+  .filter-tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 48px;
+    background: var(--surface);
+    padding: 4px;
+    width: fit-content;
+    border: 1px solid var(--border);
+  }
+
+  .filter-tab {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 8px 20px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+
+  .filter-tab.active {
+    background: var(--surface2);
+    color: var(--text);
+  }
+
+  .filter-tab:hover:not(.active) { color: var(--text-dim); }
+
+  /* FINDING CARDS */
+  .findings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .finding-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .finding-card:hover { border-color: var(--border-bright); }
+
+  .finding-card.hidden { display: none; }
+
+  .finding-header {
+    display: grid;
+    grid-template-columns: 64px 1fr auto auto;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 28px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .finding-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .finding-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .finding-screen {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .severity-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .severity-badge.critical { background: var(--critical-dim); color: var(--critical); }
+  .severity-badge.major { background: var(--major-dim); color: var(--major); }
+  .severity-badge.minor { background: var(--minor-dim); color: var(--minor); }
+
+  .finding-body {
+    display: none;
+    padding: 0 28px 28px;
+    border-top: 1px solid var(--border);
+    margin-top: 0;
+  }
+
+  .finding-body.open { display: block; }
+
+  .finding-meta {
+    display: flex;
+    gap: 24px;
+    padding: 16px 0;
+    margin-bottom: 16px;
+  }
+
+  .finding-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .finding-meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .finding-meta-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--blue-light);
+  }
+
+  .finding-body p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  .finding-body strong { color: var(--text); font-weight: 500; }
+
+  .finding-section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 20px 0 10px;
+  }
+
+  .code-block {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre;
+    margin-top: 8px;
+  }
+
+  .code-block .comment { color: var(--text-muted); }
+  .code-block .tag { color: var(--blue-light); }
+  .code-block .attr { color: var(--major); }
+  .code-block .val { color: var(--minor); }
+
+  /* SCREEN DIVIDER */
+  .screen-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0 16px;
+  }
+
+  .screen-divider-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    white-space: nowrap;
+  }
+
+  .screen-divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* SUMMARY TABLE */
+  .table-section {
+    padding: 120px 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .audit-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 48px;
+  }
+
+  .audit-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .audit-table td {
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .audit-table tr:hover td { background: var(--surface); }
+
+  .audit-table .finding-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .audit-table .finding-name { color: var(--text); font-weight: 400; }
+
+  .wcag-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border: 1px solid var(--border-bright);
+    color: var(--text-muted);
+  }
+
+  .level-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    color: var(--blue-light);
+    border: 1px solid var(--blue-dim);
+  }
+
+  /* RECOMMENDATIONS */
+  .recommendations {
+    padding: 120px 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-top: 48px;
+  }
+
+  .rec-column {
+    background: var(--surface);
+    padding: 32px;
+  }
+
+  .rec-column-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .rec-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .rec-column-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text);
+  }
+
+  .rec-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+
+  .rec-item-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .rec-item-text {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* REFLECTION */
+  .reflection {
+    padding: 120px 48px;
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .reflection-quote {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--text-dim);
+    letter-spacing: -0.01em;
+  }
+
+  .reflection-quote strong {
+    color: var(--text);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .reflection-body p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  .footer-right {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* CHEVRON */
+  .chevron {
+    width: 16px;
+    height: 16px;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .finding-header.open .chevron { transform: rotate(180deg); }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .hero, .scorecard, .summary, .findings, .table-section, .recommendations, .reflection, footer { padding-left: 24px; padding-right: 24px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .summary { grid-template-columns: 1fr; gap: 40px; }
+    .summary-heading { position: static; }
+    .methodology { grid-template-columns: 1fr; }
+    .severity-legend { grid-template-columns: 1fr; }
+    .rec-grid { grid-template-columns: 1fr; }
+    .reflection { grid-template-columns: 1fr; }
+    .finding-header { grid-template-columns: 40px 1fr auto; }
+    .finding-screen { display: none; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Accessibility Audit — <span>Amex GBT Egencia</span></div>
+  <ul class="nav-links">
+    <li><a href="file:///C:/Users/ASUS/Downloads/egencia-audit_6.html#findings">Findings</a></li>
+    <li><a href="file:///C:/Users/ASUS/Downloads/egencia-audit_6.html#table">Summary</a></li>
+    <li><a href="file:///C:/Users/ASUS/Downloads/egencia-audit_6.html#recommendations">Recommendations</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-tag">WCAG 2.1 AA · March 2026</div>
+  <h1>Accessibility<br><em>Audit</em><br>Amex GBT Egencia</h1>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Standard</span>
+      <span class="hero-meta-value">WCAG 2.1 Level A &amp; AA</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Methodology</span>
+      <span class="hero-meta-value">Automated + Manual</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Tools</span>
+      <span class="hero-meta-value">axe DevTools · WAVE · Manual</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Platform</span>
+      <span class="hero-meta-value">Web (Desktop)</span>
+    </div>
+  </div>
+</section>
+
+<!-- SCORECARD -->
+<section class="scorecard reveal visible">
+  <div class="section-label">Key Metrics</div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number total">21</div>
+      <div class="stat-label">Total Findings</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number critical">8</div>
+      <div class="stat-label">Critical</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number major">7</div>
+      <div class="stat-label">Major</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number minor">6</div>
+      <div class="stat-label">Minor</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number screens">7</div>
+      <div class="stat-label">Screens Audited</div>
+    </div>
+  </div>
+</section>
+
+<!-- SUMMARY -->
+<section class="summary reveal visible">
+  <div>
+    <div class="section-label">Overview</div>
+    <h2 class="summary-heading">Executive<br><em>Summary</em></h2>
+  </div>
+  <div class="summary-body">
+    <p>This report presents the findings of a WCAG 2.1 accessibility audit conducted on the <strong>Amex GBT Egencia corporate travel booking platform</strong>. The audit covered 7 key screens across the core user journey — from the public landing page through to booking confirmation.</p>
+    <p>A total of <strong>21 accessibility findings</strong> were identified, including 8 Critical violations, 7 Major issues, and 6 Minor concerns. Notably, the majority of critical failures are <strong>Level A violations</strong> — the most fundamental tier of accessibility compliance — meaning the platform does not meet baseline accessibility requirements as defined by WCAG 2.1.</p>
+    <div class="callout">
+      These issues have real consequences. Corporate travelers who rely on screen readers, keyboard navigation, or assistive technologies may be unable to complete a booking independently — a significant usability gap and potential legal compliance risk under the ADA, EN 301 549, and the Equality Act.
+    </div>
+    <p>Key failures include: both form fields on the login page lack programmatic labels; a critical travel disruption alert has no ARIA live region; icon-only amenity indicators convey essential booking information without any text alternative; and no visible focus indicator exists for keyboard navigation across any audited screen.</p>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="methodology reveal visible">
+  <div class="method-card">
+    <h3>Automated Scanning</h3>
+    <p>axe DevTools (v4.11.1) and WAVE (WebAIM) were used to identify programmatic accessibility violations on all publicly accessible pages. Automated tools reliably surface issues such as missing labels, invalid ARIA usage, and structural problems.</p>
+    <div class="tool-list">
+      <span class="tool-tag">axe DevTools v4.11.1</span>
+      <span class="tool-tag">WAVE by WebAIM</span>
+      <span class="tool-tag">WCAG 2.1 AA</span>
+    </div>
+  </div>
+  <div class="method-card">
+    <h3>Manual Evaluation</h3>
+    <p>Authenticated screens were evaluated manually against WCAG 2.1 success criteria — including keyboard navigation testing, visual assessment of color contrast and focus indicators, review of information hierarchy, and evaluation of icon and image alternatives.</p>
+    <div class="tool-list">
+      <span class="tool-tag">Keyboard Navigation</span>
+      <span class="tool-tag">Screen Reader Testing</span>
+      <span class="tool-tag">Colour Contrast Analyser</span>
+      <span class="tool-tag">Heuristic Review</span>
+    </div>
+  </div>
+  <div class="method-card">
+    <h3>AI-Assisted Research</h3>
+    <p>Claude (Anthropic) was used to assist with WCAG criteria mapping, heuristic analysis, and writing up findings in structured audit language — accelerating research synthesis and ensuring consistent, thorough documentation across all 21 findings.</p>
+    <div class="tool-list">
+      <span class="tool-tag">Claude by Anthropic</span>
+      <span class="tool-tag">WCAG Mapping</span>
+      <span class="tool-tag">Findings Documentation</span>
+    </div>
+  </div>
+  <div class="method-card">
+    <h3>Annotation &amp; Presentation</h3>
+    <p>All findings were annotated directly on screenshots in Figma using a structured severity-coded system — red for critical, orange for major, yellow for minor. Key findings include before/after redesign mockups showing proposed fixes alongside the original issue.</p>
+    <div class="tool-list">
+      <span class="tool-tag">Figma</span>
+      <span class="tool-tag">Annotated Screenshots</span>
+      <span class="tool-tag">Before / After Mockups</span>
+    </div>
+  </div>
+</section>
+
+<!-- SEVERITY LEGEND -->
+<div class="severity-legend reveal visible" style="margin: 80px 0px 120px; border: 1px solid var(--border); padding: 50px;">
+  <div class="severity-card">
+    <div class="severity-dot" style="background: var(--critical);"></div>
+    <h3 style="color: var(--critical);">Critical</h3>
+    <p>Blocks access entirely for users with disabilities. Must be fixed immediately. Represents a WCAG Level A or AA failure.</p>
+  </div>
+  <div class="severity-card">
+    <div class="severity-dot" style="background: var(--major);"></div>
+    <h3 style="color: var(--major);">Major</h3>
+    <p>Significantly impairs usability. Creates high friction or confusion for users of assistive technologies. Should be prioritized.</p>
+  </div>
+  <div class="severity-card">
+    <div class="severity-dot" style="background: var(--minor);"></div>
+    <h3 style="color: var(--minor);">Minor</h3>
+    <p>Reduces quality of experience. May affect some users. Address in the next design and development iteration.</p>
+  </div>
+</div>
+
+<!-- FINDINGS -->
+<section class="findings" id="findings">
+  <div class="section-label">Detailed Findings</div>
+  <div class="findings-header">
+    <h2 class="findings-title reveal visible">All 21<br>Findings</h2>
+  </div>
+
+  <div class="filter-tabs reveal visible">
+    <button class="filter-tab active" onclick="filterFindings(&#39;all&#39;)">All (21)</button>
+    <button class="filter-tab" onclick="filterFindings(&#39;critical&#39;)">Critical (8)</button>
+    <button class="filter-tab" onclick="filterFindings(&#39;major&#39;)">Major (7)</button>
+    <button class="filter-tab" onclick="filterFindings(&#39;minor&#39;)">Minor (6)</button>
+  </div>
+
+  <div class="findings-list">
+
+    <!-- SCREEN: LOGIN PAGE -->
+    <div class="screen-divider"><span class="screen-divider-label">Login Page</span><div class="screen-divider-line"></div></div>
+
+    <div class="finding-card" data-severity="critical">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-01</span>
+        <span class="finding-title">Missing Form Labels</span>
+        <span class="finding-screen">Login</span>
+        <span class="severity-badge critical">Critical</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.3.1 / 4.1.2</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">WAVE — 2 errors</span></div>
+        </div>
+        <p>Both the "Username or email" and "Password" input fields lack programmatic labels. <strong>Placeholder text is being used as a substitute</strong> — when a user begins typing, the placeholder disappears, leaving screen reader users with no context about what the field requires.</p>
+        <p>This effectively blocks independent login for users relying on screen readers (NVDA, JAWS, VoiceOver) and voice control tools.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <p>Add explicit <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">&lt;label&gt;</code> elements associated with each input via matching <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">for</code> and <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">id</code> attributes.</p>
+        <div class="code-block"><span class="comment">/* Current — inaccessible */</span>
+&lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">placeholder</span>=<span class="val">"Username or email"</span> /&gt;
+
+<span class="comment">/* Recommended */</span>
+&lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="val">"username"</span>&gt;Username or email&lt;/<span class="tag">label</span>&gt;
+&lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">id</span>=<span class="val">"username"</span> <span class="attr">name</span>=<span class="val">"username"</span> /&gt;</div>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="critical">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-02</span>
+        <span class="finding-title">Missing Page Language Declaration</span>
+        <span class="finding-screen">Login</span>
+        <span class="severity-badge critical">Critical</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">3.1.1</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">WAVE + axe</span></div>
+        </div>
+        <p>The HTML document does not declare a language via the <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">lang</code> attribute. Screen readers use this to determine which language engine and pronunciation rules to apply. Without it, text-to-speech tools may default to an incorrect language.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <div class="code-block">&lt;<span class="tag">html</span> <span class="attr">lang</span>=<span class="val">"en"</span>&gt;</div>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="critical">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-08</span>
+        <span class="finding-title">Missing Visible Focus Indicator</span>
+        <span class="finding-screen">Login</span>
+        <span class="severity-badge critical">Critical</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">2.4.7</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">AA</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual keyboard test</span></div>
+        </div>
+        <p>When navigating using only a keyboard (Tab key), <strong>there is no visible focus indicator</strong> showing which element is currently active. The browser's default focus outline appears to have been suppressed via CSS with no custom replacement provided.</p>
+        <p>This affects all keyboard-only users, including users with motor disabilities, power users, and users with cognitive disabilities who rely on clear visual cues.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <div class="code-block"><span class="tag">:focus-visible</span> {
+  <span class="attr">outline</span>: <span class="val">2px solid #2563FF</span>;
+  <span class="attr">outline-offset</span>: <span class="val">2px</span>;
+  <span class="attr">border-radius</span>: <span class="val">4px</span>;
+}</div>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="major">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-03</span>
+        <span class="finding-title">Orphaned Form Labels</span>
+        <span class="finding-screen">Login</span>
+        <span class="severity-badge major">Major</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.3.1</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">WAVE — 2 alerts</span></div>
+        </div>
+        <p>Two <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">&lt;label&gt;</code> elements exist in the markup but are not correctly associated with any input field. They are orphaned — serving no functional purpose for assistive technologies.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <p>Ensure each <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">&lt;label&gt;</code> has a <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">for</code> attribute matching the <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">id</code> of its corresponding input.</p>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="major">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-04</span>
+        <span class="finding-title">Missing Main Landmark</span>
+        <span class="finding-screen">Login</span>
+        <span class="severity-badge major">Major</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.3.6</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">AAA (Best Practice)</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">axe</span></div>
+        </div>
+        <p>The page contains no <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">&lt;main&gt;</code> landmark. Screen reader users who navigate by landmarks cannot jump directly to the login form, and must tab through all navigation elements first.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <p>Wrap the login form content in a <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">&lt;main&gt;</code> element. Ensure all page content sits within appropriate landmark regions.</p>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="major">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-06</span>
+        <span class="finding-title">Tabindex Greater Than Zero</span>
+        <span class="finding-screen">Login</span>
+        <span class="severity-badge major">Major</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">2.4.3</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">axe</span></div>
+        </div>
+        <p>An element has a <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">tabindex</code> value greater than 0, overriding the browser's natural tab order and creating an unpredictable, disorienting keyboard navigation experience.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <p>Remove all positive tabindex values. Use <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">tabindex="0"</code> for natural tab order inclusion only.</p>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="minor">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-05</span>
+        <span class="finding-title">Missing Level-One Heading</span>
+        <span class="finding-screen">Login</span>
+        <span class="severity-badge minor">Minor</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.3.1</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">axe</span></div>
+        </div>
+        <p>"Log in to your Egencia account" serves as the page title visually but is not marked as <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">&lt;h1&gt;</code>, breaking the document outline that screen reader users rely on.</p>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="minor">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-07</span>
+        <span class="finding-title">Content Outside Landmark Regions</span>
+        <span class="finding-screen">Login</span>
+        <span class="severity-badge minor">Minor</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.3.6</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">AAA (Best Practice)</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">axe — 7 elements</span></div>
+        </div>
+        <p>Seven content elements sit outside any landmark region. Screen reader users navigating by landmarks will skip this content entirely.</p>
+      </div>
+    </div>
+
+    <!-- SCREEN: LANDING PAGE -->
+    <div class="screen-divider"><span class="screen-divider-label">Landing Page</span><div class="screen-divider-line"></div></div>
+
+    <div class="finding-card" data-severity="minor">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-09</span>
+        <span class="finding-title">Invalid Heading Order</span>
+        <span class="finding-screen">Landing Page</span>
+        <span class="severity-badge minor">Minor</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.3.1</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">axe — moderate</span></div>
+        </div>
+        <p>Heading levels skip non-sequentially — jumping from <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">&lt;h1&gt;</code> to <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">&lt;h3&gt;</code> without an intervening <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">&lt;h2&gt;</code>. This breaks the logical document outline screen reader users rely on.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <p>Ensure heading levels follow a sequential hierarchy. Use CSS for visual sizing, not heading level changes.</p>
+      </div>
+    </div>
+
+    <!-- SCREEN: DASHBOARD -->
+    <div class="screen-divider"><span class="screen-divider-label">Dashboard</span><div class="screen-divider-line"></div></div>
+
+    <div class="finding-card" data-severity="critical">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-10</span>
+        <span class="finding-title">Icon-only Navigation Without Accessible Labels</span>
+        <span class="finding-screen">Dashboard</span>
+        <span class="severity-badge critical">Critical</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.1.1 / 4.1.2</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual</span></div>
+        </div>
+        <p>The primary navigation (Flights, Hotels, Trains, Cars) uses icons that may lack proper ARIA attributes. If icons are not marked as decorative with <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">aria-hidden="true"</code>, screen readers may announce file names or redundant descriptions alongside visible labels.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <p>Mark decorative navigation icons with <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">aria-hidden="true"</code> so screen readers rely solely on the visible text labels. For icon-only contexts, add <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">aria-label</code> to the parent element.</p>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="critical">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-11</span>
+        <span class="finding-title">Critical Alert Banner Missing ARIA Live Region</span>
+        <span class="finding-screen">Dashboard</span>
+        <span class="severity-badge critical">Critical</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">4.1.3</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">AA</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual</span></div>
+        </div>
+        <p>The "Middle East Update — Disruption" banner communicates a <strong>safety-critical travel alert</strong> but lacks <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">role="alert"</code> or <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">aria-live</code>. Screen reader users will not be automatically notified of this banner — they could miss a safety-critical disruption notice entirely.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <div class="code-block">&lt;<span class="tag">div</span> <span class="attr">role</span>=<span class="val">"alert"</span> <span class="attr">aria-live</span>=<span class="val">"assertive"</span>&gt;
+  Middle East Update — Disruption...
+&lt;/<span class="tag">div</span>&gt;</div>
+      </div>
+    </div>
+
+    <!-- SCREEN: SEARCH RESULTS -->
+    <div class="screen-divider"><span class="screen-divider-label">Flight Search Results</span><div class="screen-divider-line"></div></div>
+
+    <div class="finding-card" data-severity="critical">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-12</span>
+        <span class="finding-title">Amenity Icons Without Text Alternatives</span>
+        <span class="finding-screen">Search Results</span>
+        <span class="severity-badge critical">Critical</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.1.1</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual</span></div>
+        </div>
+        <p>Each flight card displays icons representing included amenities (seat type, baggage, meal, wifi). These icons convey information that directly influences booking decisions but appear to have <strong>no text alternative, tooltip, or aria-label</strong>. Screen reader users receive no amenity information.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <p>Add descriptive <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">aria-label</code> to each icon. This is a systemic fix required at the design system level — the icon component should require an <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">accessibleLabel</code> prop.</p>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="major">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-13</span>
+        <span class="finding-title">Color as Only Means to Convey Policy Status</span>
+        <span class="finding-screen">Search Results</span>
+        <span class="severity-badge major">Major</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.4.1</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual</span></div>
+        </div>
+        <p>A red flag icon indicates out-of-policy fares using color as the primary signal. Users with red-green color blindness (approximately 8% of males) may not perceive this distinction.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <p>Add a visible text label "Out of policy" alongside the flag icon. Add <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">aria-label="Out of policy"</code> to the flag element.</p>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="minor">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-14</span>
+        <span class="finding-title">Filter Bar Overflow Without Scroll Affordance</span>
+        <span class="finding-screen">Search Results</span>
+        <span class="severity-badge minor">Minor</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.3.1</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual</span></div>
+        </div>
+        <p>The filter bar overflows its container with "Sustainability" truncated at the right edge. No visible scroll affordance or indicator informs users that additional filters exist beyond the visible area.</p>
+      </div>
+    </div>
+
+    <!-- SCREEN: CUSTOMIZE FLIGHT -->
+    <div class="screen-divider"><span class="screen-divider-label">Customize Flight</span><div class="screen-divider-line"></div></div>
+
+    <div class="finding-card" data-severity="minor">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-15</span>
+        <span class="finding-title">Decorative Image Missing Null Alt Attribute</span>
+        <span class="finding-screen">Customize Flight</span>
+        <span class="severity-badge minor">Minor</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.1.1</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual</span></div>
+        </div>
+        <p>A purely decorative flight summary image likely lacks <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">alt=""</code>. Screen readers will read out the file name, creating unnecessary noise during a complex multi-step form.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <div class="code-block">&lt;<span class="tag">img</span> <span class="attr">src</span>=<span class="val">"flight-hero.jpg"</span> <span class="attr">alt</span>=<span class="val">""</span> <span class="attr">role</span>=<span class="val">"presentation"</span> /&gt;</div>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="minor">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-16</span>
+        <span class="finding-title">Seat Unavailability Message Lacks Actionable Context</span>
+        <span class="finding-screen">Customize Flight</span>
+        <span class="severity-badge minor">Minor</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.3.3</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual</span></div>
+        </div>
+        <p>"Seat selection will be available at check in" provides no context about when check-in occurs or what action to take. Users with cognitive disabilities may not understand their next step.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <p>Add persistent context: <em>"You'll be able to choose your seat during online check-in, which opens 24 hours before departure."</em></p>
+      </div>
+    </div>
+
+    <!-- SCREEN: TRAVELER FORM -->
+    <div class="screen-divider"><span class="screen-divider-label">Traveler Information Form</span><div class="screen-divider-line"></div></div>
+
+    <div class="finding-card" data-severity="major">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-17</span>
+        <span class="finding-title">Mandatory Fields Indicated by Color and Symbol Only</span>
+        <span class="finding-screen">Traveler Form</span>
+        <span class="severity-badge major">Major</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.4.1 / 1.3.1</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual</span></div>
+        </div>
+        <p>Required fields use a red asterisk (*) as the sole indicator of mandatory status — not communicated programmatically. Screen reader users may submit incomplete forms without prior warning of required fields.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <div class="code-block">&lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">aria-required</span>=<span class="val">"true"</span> <span class="attr">required</span> /&gt;</div>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="major">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-18</span>
+        <span class="finding-title">Date Fields Use Disappearing Placeholder as Format Guide</span>
+        <span class="finding-screen">Traveler Form</span>
+        <span class="severity-badge major">Major</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">3.3.2</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual</span></div>
+        </div>
+        <p>Date fields use <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">mm/dd/yyyy</code> as placeholder text — which disappears on focus. This is especially problematic for users on egencia.co.in (India) where dd/mm/yyyy is the standard format.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <p>Replace placeholder format hints with <strong>persistent helper text below the field</strong>. Ideally use a date picker component to eliminate format ambiguity entirely.</p>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="minor">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-19</span>
+        <span class="finding-title">Phone Fields Default to Incorrect Country Code</span>
+        <span class="finding-screen">Traveler Form</span>
+        <span class="severity-badge minor">Minor</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.3.4</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">AA</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual</span></div>
+        </div>
+        <p>All three phone fields default to US (+1) country code despite the platform being accessed via the Indian domain (egencia.co.in). Creates friction for international users during a time-sensitive booking flow.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <p>Auto-detect locale from browser settings or user profile to pre-populate the correct country code.</p>
+      </div>
+    </div>
+
+    <!-- SCREEN: BOOKING CONFIRMATION -->
+    <div class="screen-divider"><span class="screen-divider-label">Booking Confirmation</span><div class="screen-divider-line"></div></div>
+
+    <div class="finding-card" data-severity="major">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-20</span>
+        <span class="finding-title">Draft Status Banner Not Announced to Screen Readers</span>
+        <span class="finding-screen">Confirmation</span>
+        <span class="severity-badge major">Major</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">4.1.3</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">AA</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual</span></div>
+        </div>
+        <p>"Saved as a draft — This reservation is not yet booked" is a critical status message. Without <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">role="status"</code> or <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">aria-live</code>, screen reader users may believe their booking is confirmed when it is not — a <strong>high-stakes misunderstanding</strong>.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <div class="code-block">&lt;<span class="tag">div</span> <span class="attr">role</span>=<span class="val">"alert"</span> <span class="attr">aria-live</span>=<span class="val">"assertive"</span>&gt;
+  Saved as a draft. This reservation is not yet booked.
+&lt;/<span class="tag">div</span>&gt;</div>
+      </div>
+    </div>
+
+    <div class="finding-card" data-severity="critical">
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="finding-number">F-21</span>
+        <span class="finding-title">Amenity Icons Repeated Without Labels (Systemic)</span>
+        <span class="finding-screen">Confirmation</span>
+        <span class="severity-badge critical">Critical</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-meta">
+          <div class="finding-meta-item"><span class="finding-meta-label">WCAG</span><span class="finding-meta-value">1.1.1</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Level</span><span class="finding-meta-value">A</span></div>
+          <div class="finding-meta-item"><span class="finding-meta-label">Tool</span><span class="finding-meta-value">Manual</span></div>
+        </div>
+        <p>The inaccessible amenity icons from F-12 reappear in the itinerary detail without text alternatives. This is a <strong>systemic design system issue</strong> — the icon component does not support accessible labels by default.</p>
+        <div class="finding-section-title">Recommendation</div>
+        <p>Update the icon component library to require an <code style="font-family:DM Mono,monospace;font-size:12px;color:var(--blue-light)">accessibleLabel</code> prop as mandatory. Conduct a product-wide icon audit to identify all other instances.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SUMMARY TABLE -->
+<section class="table-section reveal visible" id="table">
+  <div class="section-label">All Findings At a Glance</div>
+  <h2 class="findings-title" style="font-family:Fraunces,serif;font-size:48px;font-weight:300;letter-spacing:-0.02em;margin-bottom:0;">Summary<br>Table</h2>
+  <table class="audit-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Finding</th>
+        <th>Screen</th>
+        <th>WCAG</th>
+        <th>Level</th>
+        <th>Severity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="finding-num">F-01</td><td class="finding-name">Missing Form Labels</td><td>Login</td><td><span class="wcag-tag">1.3.1 / 4.1.2</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge critical">Critical</span></td></tr>
+      <tr><td class="finding-num">F-02</td><td class="finding-name">Missing Page Language</td><td>Login</td><td><span class="wcag-tag">3.1.1</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge critical">Critical</span></td></tr>
+      <tr><td class="finding-num">F-03</td><td class="finding-name">Orphaned Form Labels</td><td>Login</td><td><span class="wcag-tag">1.3.1</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge major">Major</span></td></tr>
+      <tr><td class="finding-num">F-04</td><td class="finding-name">Missing Main Landmark</td><td>Login</td><td><span class="wcag-tag">1.3.6</span></td><td><span class="level-tag">AAA</span></td><td><span class="severity-badge major">Major</span></td></tr>
+      <tr><td class="finding-num">F-05</td><td class="finding-name">Missing Level-One Heading</td><td>Login</td><td><span class="wcag-tag">1.3.1</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge minor">Minor</span></td></tr>
+      <tr><td class="finding-num">F-06</td><td class="finding-name">Tabindex Greater Than Zero</td><td>Login</td><td><span class="wcag-tag">2.4.3</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge major">Major</span></td></tr>
+      <tr><td class="finding-num">F-07</td><td class="finding-name">Content Outside Landmarks</td><td>Login</td><td><span class="wcag-tag">1.3.6</span></td><td><span class="level-tag">AAA</span></td><td><span class="severity-badge minor">Minor</span></td></tr>
+      <tr><td class="finding-num">F-08</td><td class="finding-name">Missing Focus Indicator</td><td>Login</td><td><span class="wcag-tag">2.4.7</span></td><td><span class="level-tag">AA</span></td><td><span class="severity-badge critical">Critical</span></td></tr>
+      <tr><td class="finding-num">F-09</td><td class="finding-name">Invalid Heading Order</td><td>Landing</td><td><span class="wcag-tag">1.3.1</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge minor">Minor</span></td></tr>
+      <tr><td class="finding-num">F-10</td><td class="finding-name">Icon-only Navigation</td><td>Dashboard</td><td><span class="wcag-tag">1.1.1 / 4.1.2</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge critical">Critical</span></td></tr>
+      <tr><td class="finding-num">F-11</td><td class="finding-name">Alert Banner Missing ARIA Live</td><td>Dashboard</td><td><span class="wcag-tag">4.1.3</span></td><td><span class="level-tag">AA</span></td><td><span class="severity-badge critical">Critical</span></td></tr>
+      <tr><td class="finding-num">F-12</td><td class="finding-name">Amenity Icons Without Labels</td><td>Search Results</td><td><span class="wcag-tag">1.1.1</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge critical">Critical</span></td></tr>
+      <tr><td class="finding-num">F-13</td><td class="finding-name">Color-only Policy Indicator</td><td>Search Results</td><td><span class="wcag-tag">1.4.1</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge major">Major</span></td></tr>
+      <tr><td class="finding-num">F-14</td><td class="finding-name">Filter Bar Overflow</td><td>Search Results</td><td><span class="wcag-tag">1.3.1</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge minor">Minor</span></td></tr>
+      <tr><td class="finding-num">F-15</td><td class="finding-name">Decorative Image Missing Alt</td><td>Customize Flight</td><td><span class="wcag-tag">1.1.1</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge minor">Minor</span></td></tr>
+      <tr><td class="finding-num">F-16</td><td class="finding-name">Seat Message Lacks Context</td><td>Customize Flight</td><td><span class="wcag-tag">1.3.3</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge minor">Minor</span></td></tr>
+      <tr><td class="finding-num">F-17</td><td class="finding-name">Required Field Indicator</td><td>Traveler Form</td><td><span class="wcag-tag">1.4.1 / 1.3.1</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge major">Major</span></td></tr>
+      <tr><td class="finding-num">F-18</td><td class="finding-name">Disappearing Date Format Hint</td><td>Traveler Form</td><td><span class="wcag-tag">3.3.2</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge major">Major</span></td></tr>
+      <tr><td class="finding-num">F-19</td><td class="finding-name">Incorrect Default Country Code</td><td>Traveler Form</td><td><span class="wcag-tag">1.3.4</span></td><td><span class="level-tag">AA</span></td><td><span class="severity-badge minor">Minor</span></td></tr>
+      <tr><td class="finding-num">F-20</td><td class="finding-name">Draft Banner Not Announced</td><td>Confirmation</td><td><span class="wcag-tag">4.1.3</span></td><td><span class="level-tag">AA</span></td><td><span class="severity-badge major">Major</span></td></tr>
+      <tr><td class="finding-num">F-21</td><td class="finding-name">Amenity Icons Repeated (Systemic)</td><td>Confirmation</td><td><span class="wcag-tag">1.1.1</span></td><td><span class="level-tag">A</span></td><td><span class="severity-badge critical">Critical</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- RECOMMENDATIONS -->
+<section class="recommendations reveal visible" id="recommendations">
+  <div class="section-label">Prioritized Actions</div>
+  <h2 class="findings-title">Recommendations</h2>
+  <div class="rec-grid">
+    <div class="rec-column">
+      <div class="rec-column-header">
+        <div class="rec-dot" style="background:var(--critical)"></div>
+        <span class="rec-column-title">Fix Immediately</span>
+      </div>
+      <div class="rec-item"><span class="rec-item-num">01</span><span class="rec-item-text">Add programmatic labels to all form fields — affects every screen reader user attempting to log in</span></div>
+      <div class="rec-item"><span class="rec-item-num">02</span><span class="rec-item-text">Implement visible focus indicators across all interactive elements product-wide</span></div>
+      <div class="rec-item"><span class="rec-item-num">03</span><span class="rec-item-text">Add text alternatives to all amenity icons — fix at design system level</span></div>
+      <div class="rec-item"><span class="rec-item-num">04</span><span class="rec-item-text">Add ARIA live regions to all alert and status banners, especially safety-critical ones</span></div>
+      <div class="rec-item"><span class="rec-item-num">05</span><span class="rec-item-text">Declare page language on all HTML documents — a one-line fix with broad impact</span></div>
+    </div>
+    <div class="rec-column">
+      <div class="rec-column-header">
+        <div class="rec-dot" style="background:var(--major)"></div>
+        <span class="rec-column-title">Address Soon</span>
+      </div>
+      <div class="rec-item"><span class="rec-item-num">06</span><span class="rec-item-text">Add aria-required to all mandatory form fields across the booking flow</span></div>
+      <div class="rec-item"><span class="rec-item-num">07</span><span class="rec-item-text">Replace placeholder-based date hints with persistent helper text or date pickers</span></div>
+      <div class="rec-item"><span class="rec-item-num">08</span><span class="rec-item-text">Fix orphaned form labels and remove positive tabindex values on login page</span></div>
+      <div class="rec-item"><span class="rec-item-num">09</span><span class="rec-item-text">Add "Out of policy" text label alongside color-only policy flag indicators</span></div>
+      <div class="rec-item"><span class="rec-item-num">10</span><span class="rec-item-text">Add role="status" to draft booking notification banner</span></div>
+    </div>
+    <div class="rec-column">
+      <div class="rec-column-header">
+        <div class="rec-dot" style="background:var(--minor)"></div>
+        <span class="rec-column-title">Improve Iteratively</span>
+      </div>
+      <div class="rec-item"><span class="rec-item-num">11</span><span class="rec-item-text">Correct heading hierarchy across landing and internal pages</span></div>
+      <div class="rec-item"><span class="rec-item-num">12</span><span class="rec-item-text">Ensure all page content is contained within appropriate landmark regions</span></div>
+      <div class="rec-item"><span class="rec-item-num">13</span><span class="rec-item-text">Add null alt attributes to all decorative images throughout the product</span></div>
+      <div class="rec-item"><span class="rec-item-num">14</span><span class="rec-item-text">Auto-detect locale for phone country code defaults based on user profile or IP</span></div>
+      <div class="rec-item"><span class="rec-item-num">15</span><span class="rec-item-text">Add actionable contextual guidance to seat selection unavailability message</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- REFLECTION -->
+<section class="reflection reveal visible">
+  <blockquote class="reflection-quote">
+    "The most critical failures here aren't edge cases — they're <strong>overlooked fundamentals.</strong>"
+  </blockquote>
+  <div class="reflection-body">
+    <p>This audit reinforced how many accessibility failures stem from decisions made early in a product's life — placeholder labels, suppressed focus styles, icon-only components — that compound over time into significant barriers for users who depend on assistive technologies.</p>
+    <p>The good news: the majority of critical issues identified here are well-understood problems with well-understood solutions. Many require minimal development effort but deliver outsized impact. Embedding accessibility into the design process from the start — through accessible component libraries, regular automated scanning, and inclusive user research — is the most effective long-term strategy at Egencia's scale.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    Accessibility Audit — Amex GBT Egencia<br>
+    WCAG 2.1 AA Evaluation · March 2026<br>
+    Tools: axe DevTools v4.11.1 · WAVE by WebAIM · Manual Evaluation
+  </div>
+  <div class="footer-right">
+    21 Findings · 7 Screens · Combined Methodology<br>
+    egencia.co.in · egencia.co.uk<br>
+    Prepared by Poushali De
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Finding accordion
+  function toggleFinding(header) {
+    const body = header.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    header.classList.toggle('open', !isOpen);
+  }
+
+  // Filter tabs
+  function filterFindings(severity) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelectorAll('.finding-card').forEach(card => {
+      if (severity === 'all' || card.dataset.severity === severity) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  }
+</script>
+
+
+</body></html>
